@@ -15,11 +15,11 @@ var app = definition.Descriptor{
 	Description: "Application API",
 	Children: []definition.Descriptor{
 		{
-			Path:        "/clusters/{cid}/partitions/{partition}/tfjobs",
+			Path:        "/clusters/{cid}/partitions/{partitions}/tfjobs",
 			Definitions: []definition.Definition{listjobs, createjobs},
 		},
 		{
-			Path:        "/clusters/{cid}/paritions/{partition}/tfjobs/{jobid}",
+			Path:        "/clusters/{cid}/partitions/{partitions}/tfjobs/{jobid}",
 			Definitions: []definition.Definition{getjobs, updatejobs, deletejobs},
 		},
 	},
@@ -36,8 +36,8 @@ var listjobs = definition.Definition{
 		},
 		{
 			Source:      definition.Path,
-			Name:        "paritions",
-			Description: "paritions name",
+			Name:        "partitions",
+			Description: "partitions name",
 		},
 	},
 	Results: definition.DataErrorResults("all app list"),
@@ -54,8 +54,8 @@ var createjobs = definition.Definition{
 		},
 		{
 			Source:      definition.Path,
-			Name:        "paritions",
-			Description: "parition name",
+			Name:        "partitions",
+			Description: "partition name",
 		},
 		{
 			Source:      definition.Body,
@@ -77,8 +77,8 @@ var deletejobs = definition.Definition{
 		},
 		{
 			Source:      definition.Path,
-			Name:        "paritions",
-			Description: "paritions name",
+			Name:        "partitions",
+			Description: "partitions name",
 		},
 		{
 			Source:      definition.Path,
@@ -100,8 +100,8 @@ var updatejobs = definition.Definition{
 		},
 		{
 			Source:      definition.Path,
-			Name:        "paritions",
-			Description: "paritions name",
+			Name:        "partitions",
+			Description: "partitions name",
 		},
 		{
 			Source:      definition.Path,
@@ -128,8 +128,8 @@ var getjobs = definition.Definition{
 		},
 		{
 			Source:      definition.Path,
-			Name:        "paritions",
-			Description: "paritions name",
+			Name:        "partitions",
+			Description: "partitions name",
 		},
 		{
 			Source:      definition.Path,
