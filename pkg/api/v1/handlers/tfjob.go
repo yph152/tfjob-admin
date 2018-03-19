@@ -10,18 +10,22 @@ import (
 	//	"fmt""
 	tfjobtypes "tfjob-admin/pkg/api/v1/types"
 	tfv1alpha2 "tfjob-admin/pkg/apis/tensorflow/v1alpha2"
+	storageclient "tfjob-admin/pkg/storage"
 	tfjobclient "tfjob-admin/pkg/tfjobs"
 	//	"fmt"
 )
 
 var tfc *tfjobclient.TFJobClient
+var sc *storageclient.StorageClient
 
-func NewClient(kubeconfig string) {
+func NewClient(kubeconfig, storagehost string) {
 	tfc, _ = tfjobclient.NewTFJobClient(kubeconfig)
+	sc, _ = storageclient.NewStorageClient(storagehost)
 }
 
 func convert(importconfig *tfjobtypes.ImportConfig) *tfv1alpha2.TFJob {
 
+	storageSpec, _ := getsStorage(importconfig.UserID, importconfig.Partition)
 	var replica int32 = 1
 	jobs := new(tfv1alpha2.TFJob)
 	//	jobs.APIVersion = "kubeflow.org/v1alpha2"
@@ -36,9 +40,39 @@ func convert(importconfig *tfjobtypes.ImportConfig) *tfv1alpha2.TFJob {
 	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Containers[0].Image = importconfig.Images
 	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Containers[0].Command = importconfig.Command
 	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.RestartPolicy = "OnFailure"
-
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Volumes = make([]v1.Volume, 1)
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Volumes[0].Name = "path"
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Volumes[0].VolumeSource.PersistentVolumeClaim = &v1.PersistentVolumeClaimVolumeSource{}
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Volumes[0].VolumeSource.PersistentVolumeClaim.ClaimName = storageSpec.PersistentVolumeClaim
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Containers[0].VolumeMounts = make([]v1.VolumeMount, 1)
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Containers[0].VolumeMounts[0].Name = "path"
+	jobs.Spec.TFReplicaSpecs["Worker"].Template.Spec.Containers[0].VolumeMounts[0].MountPath = storageSpec.MountPath
 	return jobs
 
+}
+
+func getsStorage(userid, partition string) (*tfjobtypes.StorageSpec, error) {
+	storageResourcesResult := sc.GetStorageResources(userid)
+
+	if storageResourcesResult.Err != nil {
+		return nil, storageResourcesResult.Err
+	}
+
+	storageID := storageResourcesResult.StorageList.StorageResources[0].ID
+
+	storageResult := sc.GetStorage(storageID, partition, userid)
+
+	if storageResult.Err != nil {
+		return nil, storageResult.Err
+	}
+
+	storage := &tfjobtypes.StorageSpec{
+		StorageID:             storageID,
+		MountPath:             storageResult.StorageInfo.MountPath,
+		ReadOnly:              storageResult.StorageInfo.ReadOnly,
+		PersistentVolumeClaim: storageResult.StorageInfo.PVCName,
+	}
+	return storage, nil
 }
 func GetJob(ctx context.Context, cid, partitions, jobid string) (*tfv1alpha2.TFJob, error) {
 	tfjob, err := tfc.GetJob(cid, partitions, jobid)

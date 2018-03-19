@@ -25,7 +25,7 @@ func Run(opt *options.ServerRunOptions, stopCh <-chan int) error {
 		nirvana.Port(defaultPort),
 	)
 
-	api.Initialize(config, opt.Kubeconfig)
+	api.Initialize(config, opt.Kubeconfig, opt.StorageHost)
 
 	if err := nirvana.NewServer(config).Serve(); err != nil {
 		fmt.Println(err)
