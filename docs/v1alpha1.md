@@ -192,8 +192,6 @@ Args:
     "eventDir": "/clever/admin/xinhe",
     "modelDir": "/clever/admin/xinhe/logs",
     "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {
-    "count": "1",
     "replicas": {[
       {
         "type": "worker",
@@ -273,8 +271,6 @@ Args:
     "eventDir": "/clever/admin/xinhe",
     "modelDir": "/clever/admin/xinhe/logs",
     "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {
-    "count": "1",
     "replicas": {[
       {
         "type": "worker",
@@ -368,8 +364,6 @@ Args:
     "eventDir": "/clever/admin/xinhe",
     "modelDir": "/clever/admin/xinhe/logs",
     "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {
-    "count": "1",
     "replicas": {[
       {
         "type": "worker",
