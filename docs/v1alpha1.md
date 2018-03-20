@@ -88,21 +88,33 @@ Args:
       "spec": {
       "description": "create a tfjobs",
       "partition": "clever",
-      "runtime": "Python 2.7 + Tensorflow 1.2.1",
-      "workerdir": "/clever/admin/xinhe/logs",
-      "bootfile": "/clever/admin/xinhe/file.python",
-      "args": "-test=10 -config=1",
+      "runtime": "Python_2.7+Tensorflow_1.2.1",
+      "workdir": "/clever/admin/xinhe/jobs",
+      "bootfile": "/clever/admin/xinhe/file.py",
+      "args": ["--test=10","--config=1"],
       "checkpointDir": /clever/admin",
       "eventDir": "/clever/admin/xinhe",
       "modelDir": "/clever/admin/xinhe/logs",
       "logDir": "/clever/admin/xinhe/logs/guideline",
-      "replicas": {
-        "count": "1",
-        "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-           }
+      "replicas": {[
+        {
+          "type": "worker",
+          "count": "1",
+          "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+             }
+         },
+         {
+           "type": "ps",
+           "conut": "0",
+           "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+           }           
+          }]
         }
      },
     "status": {
@@ -125,7 +137,7 @@ Args:
 
 **Request**
 
-URL: `POST /api/v1alpha2/clusters/{cid}/partitions/{partition}/tfjob`
+URL: `POST /api/v1alpha1/clusters/{cid}/partitions/{partition}/tfjob`
 
 Header:
 
@@ -144,7 +156,7 @@ Args:
 | runtime   | string, required | python and tensorflow version |
 | workdir   | string, optional| work directory     |
 | bootfile  | string, required | startup script          |
-| args      | string, required | args of command         |
+| args      | []string, required | args of command         |
 | enviroment| string, optional | enviroment
 | checkpointDir  | string, optional | checkpoint directory.   |
 | eventDir  | string, optional | event dir               |
@@ -153,6 +165,8 @@ Args:
 | cpu       | string, required | cpu-resource-limit      |
 | gpu       | string, required | gpu-resource-limit      |
 | memory    | string, required | memory-resource-limit   |
+| type      | string, optional | type for tensorflow ps/worker |
+| count     | string, optional | ps/worker counts        | 
 
 **Response**
 
@@ -180,11 +194,25 @@ Args:
     "logDir": "/clever/admin/xinhe/logs/guideline",
     "replicas": {
     "count": "1",
-    "resource": {
-       "cpu": "1.000",
-       "memory": "2048Mi",
-       "gpu": "1"
-        }
+    "replicas": {[
+      {
+        "type": "worker",
+        "count": "1",
+        "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+           }
+       },
+       {
+         "type": "ps",
+         "conut": "0",
+         "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+         }           
+        }]
       }
    },
   "status": {
@@ -247,11 +275,25 @@ Args:
     "logDir": "/clever/admin/xinhe/logs/guideline",
     "replicas": {
     "count": "1",
-    "resource": {
-       "cpu": "1.000",
-       "memory": "2048Mi",
-       "gpu": "1"
-        }
+    "replicas": {[
+      {
+        "type": "worker",
+        "count": "1",
+        "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+           }
+       },
+       {
+         "type": "ps",
+         "conut": "0",
+         "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+         }           
+        }]
       }
    },
   "status": {
@@ -266,7 +308,6 @@ Args:
     ]
   }
 }
-
 ```
 
 ## update-a-tfjob
@@ -292,7 +333,7 @@ Args:
 | runtime   | string, required | python and tensorflow version |
 | workdir   | string, optional| work directory     |
 | bootfile  | string, required | startup script          |
-| args      | string, required | args of command         |
+| args      | []string, required | args of command         |
 | enviroment| string, optional | enviroment
 | checkpointDir  | string, optional | checkpoint directory.   |
 | eventDir  | string, optional | event dir               |
@@ -301,7 +342,8 @@ Args:
 | cpu       | string, required | cpu-resource-limit      |
 | gpu       | string, required | gpu-resource-limit      |
 | memory    | string, required | memory-resource-limit   |
-
+| type      | string, optional | type for tensorflow ps/worker |
+| count     | string, optional | ps/worker counts        |
 **Response**
 
 ```
@@ -328,11 +370,25 @@ Args:
     "logDir": "/clever/admin/xinhe/logs/guideline",
     "replicas": {
     "count": "1",
-    "resource": {
-       "cpu": "1.000",
-       "memory": "2048Mi",
-       "gpu": "1"
-        }
+    "replicas": {[
+      {
+        "type": "worker",
+        "count": "1",
+        "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+           }
+       },
+       {
+         "type": "ps",
+         "conut": "0",
+         "resource": {
+           "cpu": "1.000",
+           "memory": "2048Mi",
+           "gpu": "1"
+         }           
+        }]
       }
    },
   "status": {
@@ -347,7 +403,6 @@ Args:
     ]
   }
 }
-
 ```
 
 ## delete-a-tfjob
