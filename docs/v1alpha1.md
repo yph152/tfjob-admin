@@ -48,11 +48,11 @@
 | Delete | DELETE /api/v1alpha1/clusters/{cid}/partitions/{partition}/tfjobs/:ID     | [link](#delete-a-tfjob)                     |
 # API Details
 
-## list-a-tfjobs
+## list-of-tfjobs-of-all-users
 
 **Request**
 
-URL: `GET /api/v1alpha2/clusters/{cid}/partitions/{partition}/tfjob`
+URL: `GET /api/v1alpha1/clusters/{cid}/partitions/{partition}/tfjob`
 
 Header:
 
@@ -152,19 +152,19 @@ Args:
 | cid       | string, required | Cluster id              |
 | partition | string, required | Partition(namespace) id |
 | name      | string, required | tfjob name           
-| description | string, optional | description tfjob       |
 | runtime   | string, required | python and tensorflow version |
-| workdir   | string, optional| work directory     |
 | bootfile  | string, required | startup script          |
-| args      | []string, required | args of command         |
-| enviroment| string, optional | enviroment
-| checkpointDir  | string, optional | checkpoint directory.   |
-| eventDir  | string, optional | event dir               |
-| modelDir  | string, optional | model dir               |
-| logDir    | string, optional | log dir
 | cpu       | string, required | cpu-resource-limit      |
 | gpu       | string, required | gpu-resource-limit      |
 | memory    | string, required | memory-resource-limit   |
+| args      | []string, optional | args of command         |
+| description | string, optional | description tfjob       |
+| workdir   | string, optional| work directory     |
+| enviroment| string, optional | enviroment
+| checkpointDir  | string, optional | checkpoint directory  |
+| eventDir  | string, optional | event dir               |
+| modelDir  | string, optional | model dir               |
+| logDir    | string, optional | log dir
 | type      | string, optional | type for tensorflow ps/worker |
 | count     | string, optional | ps/worker counts        | 
 
@@ -182,37 +182,37 @@ Args:
     "lastUpdateTime": "2017-08-23T21:17:09.379754063+08:00"
   },
  "spec": {
-    "description": "create a tfjobs",
-    "partition": "clever",
-    "runtime": "Python 2.7 + Tensorflow 1.2.1",
-    "workerdir": "/clever/admin/xinhe/logs",
-    "bootfile": "/clever/admin/xinhe/file.python",
-    "args": "-test=10 -config=1",
-    "checkpointDir": /clever/admin",
-    "eventDir": "/clever/admin/xinhe",
-    "modelDir": "/clever/admin/xinhe/logs",
-    "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {[
-      {
-        "type": "worker",
-        "count": "1",
-        "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-           }
-       },
-       {
-         "type": "ps",
-         "conut": "0",
-         "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-         }           
-        }]
-      }
-   },
+      "description": "create a tfjobs",
+      "partition": "clever",
+      "runtime": "Python_2.7+Tensorflow_1.2.1",
+      "workdir": "/clever/admin/xinhe/jobs",
+      "bootfile": "/clever/admin/xinhe/file.py",
+      "args": ["--test=10","--config=1"],
+      "checkpointDir": /clever/admin",
+      "eventDir": "/clever/admin/xinhe",
+      "modelDir": "/clever/admin/xinhe/logs",
+      "logDir": "/clever/admin/xinhe/logs/guideline",
+      "replicas": {[
+        {
+          "type": "worker",
+          "count": "1",
+          "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+             }
+         },
+         {
+           "type": "ps",
+           "conut": "0",
+           "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+           }           
+          }]
+        }
+     },
   "status": {
     "phase": "running",
     "replicas": [
@@ -261,37 +261,37 @@ Args:
     "lastUpdateTime": "2017-08-23T21:17:09.379754063+08:00"
   },
  "spec": {
-    "description": "create a tfjobs",
-    "partition": "clever",
-    "runtime": "Python 2.7 + Tensorflow 1.2.1",
-    "workerdir": "/clever/admin/xinhe/logs",
-    "bootfile": "/clever/admin/xinhe/file.python",
-    "args": "-test=10 -config=1",
-    "checkpointDir": /clever/admin",
-    "eventDir": "/clever/admin/xinhe",
-    "modelDir": "/clever/admin/xinhe/logs",
-    "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {[
-      {
-        "type": "worker",
-        "count": "1",
-        "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-           }
-       },
-       {
-         "type": "ps",
-         "conut": "0",
-         "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-         }           
-        }]
-      }
-   },
+      "description": "create a tfjobs",
+      "partition": "clever",
+      "runtime": "Python_2.7+Tensorflow_1.2.1",
+      "workdir": "/clever/admin/xinhe/jobs",
+      "bootfile": "/clever/admin/xinhe/file.py",
+      "args": ["--test=10","--config=1"],
+      "checkpointDir": /clever/admin",
+      "eventDir": "/clever/admin/xinhe",
+      "modelDir": "/clever/admin/xinhe/logs",
+      "logDir": "/clever/admin/xinhe/logs/guideline",
+      "replicas": {[
+        {
+          "type": "worker",
+          "count": "1",
+          "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+             }
+         },
+         {
+           "type": "ps",
+           "conut": "0",
+           "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+           }           
+          }]
+        }
+     },
   "status": {
     "phase": "running",
     "replicas": [
@@ -325,21 +325,21 @@ Args:
 | cid       | string, required | Cluster id              |
 | partition | string, required | Partition(namespace) id |
 | name      | string, required | tfjob name           
-| description | string, optional | description tfjob       |
 | runtime   | string, required | python and tensorflow version |
-| workdir   | string, optional| work directory     |
 | bootfile  | string, required | startup script          |
-| args      | []string, required | args of command         |
-| enviroment| string, optional | enviroment
-| checkpointDir  | string, optional | checkpoint directory.   |
-| eventDir  | string, optional | event dir               |
-| modelDir  | string, optional | model dir               |
-| logDir    | string, optional | log dir
 | cpu       | string, required | cpu-resource-limit      |
 | gpu       | string, required | gpu-resource-limit      |
 | memory    | string, required | memory-resource-limit   |
+| args      | []string, optional | args of command         |
+| description | string, optional | description tfjob       |
+| workdir   | string, optional| work directory     |
+| enviroment| string, optional | enviroment
+| checkpointDir  | string, optional | checkpoint directory  |
+| eventDir  | string, optional | event dir               |
+| modelDir  | string, optional | model dir               |
+| logDir    | string, optional | log dir
 | type      | string, optional | type for tensorflow ps/worker |
-| count     | string, optional | ps/worker counts        |
+| count     | string, optional | ps/worker counts        | 
 **Response**
 
 ```
@@ -354,37 +354,37 @@ Args:
     "lastUpdateTime": "2017-08-23T21:17:09.379754063+08:00"
   },
  "spec": {
-    "description": "create a tfjobs",
-    "partition": "clever",
-    "runtime": "Python 2.7 + Tensorflow 1.2.1",
-    "workerdir": "/clever/admin/xinhe/logs",
-    "bootfile": "/clever/admin/xinhe/file.python",
-    "args": "-test=10 -config=1",
-    "checkpointDir": /clever/admin",
-    "eventDir": "/clever/admin/xinhe",
-    "modelDir": "/clever/admin/xinhe/logs",
-    "logDir": "/clever/admin/xinhe/logs/guideline",
-    "replicas": {[
-      {
-        "type": "worker",
-        "count": "1",
-        "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-           }
-       },
-       {
-         "type": "ps",
-         "conut": "0",
-         "resource": {
-           "cpu": "1.000",
-           "memory": "2048Mi",
-           "gpu": "1"
-         }           
-        }]
-      }
-   },
+      "description": "create a tfjobs",
+      "partition": "clever",
+      "runtime": "Python_2.7+Tensorflow_1.2.1",
+      "workdir": "/clever/admin/xinhe/jobs",
+      "bootfile": "/clever/admin/xinhe/file.py",
+      "args": ["--test=10","--config=1"],
+      "checkpointDir": /clever/admin",
+      "eventDir": "/clever/admin/xinhe",
+      "modelDir": "/clever/admin/xinhe/logs",
+      "logDir": "/clever/admin/xinhe/logs/guideline",
+      "replicas": {[
+        {
+          "type": "worker",
+          "count": "1",
+          "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+             }
+         },
+         {
+           "type": "ps",
+           "conut": "0",
+           "resource": {
+             "cpu": "1.000",
+             "memory": "2048Mi",
+             "gpu": "1"
+           }           
+          }]
+        }
+     },
   "status": {
     "phase": "running",
     "replicas": [
